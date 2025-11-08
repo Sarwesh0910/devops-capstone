@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('Dockerhub-key') // Docker Hub username/password
-    IMAGE_NAME = "Dockerhub-token/devops-capstone"
+    DOCKERHUB_CREDENTIALS = credentials('Dockerhub-token') // Docker Hub username/password
+    IMAGE_NAME = "devops-capstone"
     APP_HOST = "ubuntu@172.31.14.155"
   }
 
