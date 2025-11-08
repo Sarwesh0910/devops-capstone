@@ -3,14 +3,14 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDENTIALS = credentials('Dockerhub-token') // Docker Hub username/password
-    IMAGE_NAME = "devops-capstone"
+    IMAGE_NAME = "Dockerhub-token/devops-capstone"
     APP_HOST = "ubuntu@172.31.14.155"
   }
 
   stages {
     stage('Clone Repository') {
       steps {
-        git 'https://github.com/Sarwesh0910/devops-capstone.git'
+        git branch: 'main', url: 'https://github.com/Sarwesh0910/devops-capstone.git'
       }
     }
 
