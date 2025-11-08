@@ -2,46 +2,55 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_CREDENTIALS_ID = 'Dockerhub-key'           // Your Jenkins credential ID
-    DOCKER_USER = 'sarweshvaran'                      // Your DockerHub username
-    APP_EC2_IP = 'your.ec2.ip.address'                // Replace with your EC2 IP
-    SSH_KEY = credentials('ec2-ssh-key')              // Your EC2 SSH key credential ID
+    DOCKERHUB_CREDENTIALS = credentials('Dockerhub-key') // Docker Hub username/password
+    IMAGE_NAME = "Dockerhub-token/devops-capstone"
+    APP_HOST = "ubuntu@172.31.14.155"
   }
 
   stages {
-    stage('Clone') {
+    stage('Clone Repository') {
       steps {
-        git 'https://github.com/sarweshvaran/devops-capstone.git'
+        git 'https://github.com/Sarwesh0910/devops-capstone.git'
       }
     }
 
     stage('Build Docker Image') {
       steps {
-        script {
-          def imageName = "${DOCKER_USER}/devops-capstone"
-          withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
-            sh "docker build -t ${imageName} ."
-            sh "echo ${DOCKERHUB_PASS} | docker login -u ${DOCKERHUB_USER} --password-stdin"
-            sh "docker push ${imageName}"
-          }
-        }
+        sh 'docker build -t $IMAGE_NAME:latest .'
+      }
+    }
+
+    stage('Push to Docker Hub') {
+      steps {
+        sh '''
+          echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin
+          docker push $IMAGE_NAME:latest
+        '''
       }
     }
 
     stage('Deploy to EC2') {
       steps {
-        script {
-          def imageName = "${DOCKER_USER}/devops-capstone"
-          sh """
-            ssh -i ${SSH_KEY} ubuntu@${APP_EC2_IP} << EOF
-              docker pull ${imageName}
-              docker stop capstone || true
-              docker rm capstone || true
-              docker run -d --name capstone -p 80:3000 ${imageName}
-            EOF
-          """
+        sshagent(['app-ec2-ssh-key']) {
+          sh '''
+            ssh -o StrictHostKeyChecking=no $APP_HOST '
+              docker pull $IMAGE_NAME:latest &&
+              docker stop app || true &&
+              docker rm app || true &&
+              docker run -d --name app -p 80:3000 $IMAGE_NAME:latest
+            '
+          '''
         }
       }
+    }
+  }
+
+  post {
+    success {
+      echo '✅ Deployment successful!'
+    }
+    failure {
+      echo '❌ Deployment failed. Check logs.'
     }
   }
 }
