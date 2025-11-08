@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDENTIALS = credentials('Dockerhub-token') // Docker Hub username/password
-    IMAGE_NAME = "Dockerhub-token/devops-capstone"
+    IMAGE_NAME = "sarweshvaran/devops-capstone"
     APP_HOST = "ubuntu@172.31.14.155"
   }
 
