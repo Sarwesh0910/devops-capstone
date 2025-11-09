@@ -1,9 +1,9 @@
 # DevOps Capstone Project
 
-## 🌐 Overview
+##Overview
 End-to-end CI/CD pipeline for a Node.js web app using GitHub, Jenkins, Docker, AWS EC2, Prometheus, Grafana, and shell scripting.
 
-## 🧰 Tech Stack
+##Tech Stack
 - Node.js
 - Docker
 - Jenkins
@@ -11,7 +11,7 @@ End-to-end CI/CD pipeline for a Node.js web app using GitHub, Jenkins, Docker, A
 - Prometheus + Grafana
 - Bash + Cron
 
-## 🚀 Setup Instructions
+##Setup Instructions
 
 ### 1. Clone the repo
 ```bash
