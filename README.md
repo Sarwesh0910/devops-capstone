@@ -11,8 +11,7 @@ End-to-end CI/CD pipeline for a Node.js web app using GitHub, Jenkins, Docker, A
 - Prometheus + Grafana
 - Bash + Cron
 
-##Setup Instructions
-
+##Setup Instruction
 ### 1. Clone the repo
 ```bash
 git clone https://github.com/yourusername/devops-capstone.git
