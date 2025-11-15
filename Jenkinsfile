@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('Dockerhub-token') // Docker Hub username/password
+    DOCKERHUB_CREDENTIALS = credentials('Dockerhub-token') 
     IMAGE_NAME = "sarweshvaran/devops-capstone"
     APP_HOST = "ubuntu@172.31.14.155"
   }
@@ -47,10 +47,10 @@ pipeline {
 
   post {
     success {
-      echo '✅ Deployment successful!'
+      echo 'Deployment successful!'
     }
     failure {
-      echo '❌ Deployment failed. Check logs.'
+      echo 'Deployment failed. Check logs.'
     }
   }
 }
